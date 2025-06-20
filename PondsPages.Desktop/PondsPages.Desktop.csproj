@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
+        One for Windows with net9.0-windows TFM, one for MacOS with net9.0-macos and one with net9.0 TFM for Linux.-->
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <PackageReference Include="Avalonia.Desktop" />
+        <PackageReference Include="Avalonia.Fonts.Inter" />
+        <PackageReference Include="Avalonia.Themes.Fluent" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PondsPages.Core\PondsPages.Core.csproj" />
+        <ProjectReference Include="..\PondsPages.ViewModel\PondsPages.ViewModel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="App.axaml.cs">
+        <DependentUpon>App.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\MainView.axaml" />
+      <AdditionalFiles Include="Views\MainWindow.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Avalonia.Controls">
+        <HintPath>..\..\..\..\.nuget\packages\avalonia\11.3.0\ref\net8.0\Avalonia.Controls.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>

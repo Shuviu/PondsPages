@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <RootNamespace>PondsPages</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="api_handlers\" />
+      <Folder Include="database_handlers\" />
+      <Folder Include="dataclasses\" />
+      <Folder Include="util\" />
+    </ItemGroup>
+</Project>
