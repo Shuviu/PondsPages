@@ -6,22 +6,62 @@ namespace PondsPages.dataclasses;
 
 public class Book
 {
+    /// <summary>
+    /// Gets or sets the title of the book.
+    /// </summary>
     public string Title { get; set; }
+
+    /// <summary>
+    /// Gets or sets the author of the book.
+    /// </summary>
     public string Author { get; set; }
     private string _isbn = "";
+    /// <summary>
+    /// Gets or sets the ISBN of the book.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the ISBN is invalid.</exception>
     public string Isbn
     {
         get => _isbn;
         private set => _isbn = IsbnCheck(value) ? value : throw new ArgumentException("Invalid ISBN");
     }
+
+    /// <summary>
+    /// Gets or sets the publisher of the book.
+    /// </summary>
     public string Publisher { get; set; }
+
+    /// <summary>
+    /// Gets or sets the publication date of the book.
+    /// </summary>
     public DateOnly? Published { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the description of the book.
+    /// </summary>
     public string Description { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the cover of the book.
+    /// </summary>
     public string Cover { get; set; }
 
     // ---- Constructors ---- //
-    public Book(string title, string author, string isbn, string publisher, DateOnly? published, string description, string cover)
-        => (Title, Author, Isbn, Publisher, Published, Description, Cover) = (title, author, isbn, publisher, published, description, cover);
+    /// <summary>
+    /// Represents a book with properties such as title, author, ISBN, publisher, publication date, description, and cover.
+    /// </summary>
+    /// <param name="title">The title of the book</param>
+    /// <param name="author">The author of the book</param>
+    /// <param name="isbn">The ISBN of the book</param>
+    /// <param name="publisher">The publisher of the book</param>
+    /// <param name="published">The publication date of the book</param>
+    /// <param name="description">The description of the book</param>
+    /// <param name="cover">The cover url of the book</param>
+    public Book(string title, string author, string isbn, string publisher, DateOnly? published, string description,
+        string cover)
+        => (Title, Author, Isbn, Publisher, Published, Description, Cover) =
+            (title, author, isbn, publisher, published, description, cover);
+
     public Book(string title, string author, string isbn, string publisher, DateOnly? published, string description)
         : this(title, author, isbn, publisher, published, description, string.Empty) { }
     public Book() : this("", "", "", "", null, "") { }
@@ -44,6 +84,11 @@ public class Book
     }
     
     // ---- Class Methods ---- // 
+    /// <summary>
+    /// Checks if the parsed ISBN is valid.
+    /// </summary>
+    /// <param name="isbn">The ISBN to be checked</param>
+    /// <returns>A bool describing if the ISBN is valid</returns>
     public static bool IsbnCheck(string isbn)
     {
         if (isbn.Length != 10 && isbn.Length != 13)
@@ -54,7 +99,9 @@ public class Book
         
         return isbn.Length == 10 ? ShortIsbnCheck(isbn.ToCharArray()) : LongIsbnCheck(isbn);
     }
-
+    /// <summary>
+    /// Checks a 10 Digit ISBN.
+    /// </summary>
     private static bool ShortIsbnCheck(char[] isbn)
     {
         int sum = 0;
@@ -64,6 +111,9 @@ public class Book
         
         return isbn.Last() != sum % 11;
     }
+    /// <summary>
+    /// Checks a 13 Digit ISBN.
+    /// </summary>
     private static bool LongIsbnCheck(string isbn)
     {
         int sum = 0;
