@@ -13,7 +13,7 @@ public class Book
     public string Title { get; set; }
 
     /// <summary>
-    /// Gets or sets the author of the book.
+    /// Gets or sets the authors names of the book.
     /// </summary>
     public string[] Authors { get; set; }
     private string _isbn = "";
@@ -28,7 +28,7 @@ public class Book
     }
 
     /// <summary>
-    /// Gets or sets the publisher of the book.
+    /// Gets or sets the publishers names of the book.
     /// </summary>
     public string[] Publishers { get; set; }
 
@@ -38,7 +38,7 @@ public class Book
     public DateOnly? Published { get; set; }
     
     /// <summary>
-    /// Gets or sets the description of the book.
+    /// Gets or sets the users description of the book.
     /// </summary>
     public string Description { get; set; }
     
@@ -53,11 +53,11 @@ public class Book
     /// Represents a book with properties such as title, author, ISBN, publisher, publication date, description, and cover.
     /// </summary>
     /// <param name="title">The title of the book</param>
-    /// <param name="authors">The authors of the book</param>
+    /// <param name="authors">The authors names of the book</param>
     /// <param name="isbn">The ISBN of the book</param>
-    /// <param name="publishers">The publisher of the book</param>
+    /// <param name="publishers">The publishers names of the book</param>
     /// <param name="published">The publication date of the book</param>
-    /// <param name="description">The description of the book</param>
+    /// <param name="description">The users description of the book</param>
     /// <param name="covers">The cover url of the book</param>
     public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description,
         Dictionary<string, string> covers)
