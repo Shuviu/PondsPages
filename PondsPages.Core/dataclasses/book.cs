@@ -94,7 +94,7 @@ public class Book
     public static bool IsbnCheck(string isbn)
     {
         string isbnString = new(isbn.Where(x => x != '-').ToArray());
-        if (isbnString.Length != 10 && isbn.Length != 13)
+        if (isbnString.Length != 10 && isbnString.Length != 13)
             return false;
 
         if (isbnString.Any(x => !char.IsDigit(x)))
@@ -112,7 +112,7 @@ public class Book
             sum += int.Parse(isbn[i].ToString()) * (10 - i);
         
         
-        return isbn.Last() != sum % 11;
+        return int.Parse(isbn.Last().ToString()) == (11 - sum % 11);
     }
     /// <summary>
     /// Checks a 13 Digit ISBN.
@@ -126,6 +126,7 @@ public class Book
             sum += int.Parse(isbn[i].ToString()) * multipliers[i % 2];
         }
         
-        return isbn.Last() != (10 - sum % 10);
+        int checkDigit = sum % 10 == 0 ? 0 : 10 - sum % 10;
+        return int.Parse(isbn.Last().ToString()) == checkDigit;
     }
 }

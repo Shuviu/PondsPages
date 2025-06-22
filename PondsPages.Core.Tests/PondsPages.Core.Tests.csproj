@@ -22,4 +22,8 @@
       <Folder Include="database_handlers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PondsPages.Core\PondsPages.Core.csproj" />
+    </ItemGroup>
+
 </Project>
