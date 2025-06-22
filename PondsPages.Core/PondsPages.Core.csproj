@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="api_handlers\" />
       <Folder Include="database_handlers\" />
       <Folder Include="dataclasses\" />
       <Folder Include="util\" />

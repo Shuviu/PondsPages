@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PondsPages.dataclasses;
@@ -14,7 +15,7 @@ public class Book
     /// <summary>
     /// Gets or sets the author of the book.
     /// </summary>
-    public string Author { get; set; }
+    public string[] Authors { get; set; }
     private string _isbn = "";
     /// <summary>
     /// Gets or sets the ISBN of the book.
@@ -43,34 +44,35 @@ public class Book
     
     /// <summary>
     /// Gets or sets the cover of the book.
+    /// Stores the book cover urls (small, medium, large)
     /// </summary>
-    public string Cover { get; set; }
+    public Dictionary<string, string> Covers { get; set; }
 
     // ---- Constructors ---- //
     /// <summary>
     /// Represents a book with properties such as title, author, ISBN, publisher, publication date, description, and cover.
     /// </summary>
     /// <param name="title">The title of the book</param>
-    /// <param name="author">The author of the book</param>
+    /// <param name="authors">The authors of the book</param>
     /// <param name="isbn">The ISBN of the book</param>
     /// <param name="publisher">The publisher of the book</param>
     /// <param name="published">The publication date of the book</param>
     /// <param name="description">The description of the book</param>
-    /// <param name="cover">The cover url of the book</param>
-    public Book(string title, string author, string isbn, string publisher, DateOnly? published, string description,
-        string cover)
-        => (Title, Author, Isbn, Publisher, Published, Description, Cover) =
-            (title, author, isbn, publisher, published, description, cover);
+    /// <param name="covers">The cover url of the book</param>
+    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description,
+        Dictionary<string, string> covers)
+        => (Title, Authors, Isbn, Publisher, Published, Description, Covers) =
+            (title, authors, isbn, publisher, published, description, covers);
 
-    public Book(string title, string author, string isbn, string publisher, DateOnly? published, string description)
-        : this(title, author, isbn, publisher, published, description, string.Empty) { }
-    public Book() : this("", "", "", "", null, "") { }
-    public Book(Book book) : this(book.Title, book.Author, book.Isbn, book.Publisher, book.Published, book.Description, book.Cover) { }
+    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description)
+        : this(title, authors, isbn, publisher, published, description, []) { }
+    public Book() : this("", [], "", "", null, "") { }
+    public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publisher, book.Published, book.Description, book.Covers) { }
     
     // ---- Object Methods ---- //
     public override string ToString()
     {
-        return $"Book [ISBN: {Isbn}; {Title} by {Author}]";
+        return $"Book [ISBN: {Isbn}; {Title} by {Authors}]";
     }
     public override bool Equals(object? obj)
     {
