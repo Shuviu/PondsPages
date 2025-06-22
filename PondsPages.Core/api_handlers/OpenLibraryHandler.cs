@@ -13,10 +13,10 @@ public class OpenLibraryHandler : IIsbnHandler
 {
     private readonly HttpClient _httpClient;
 
-    public OpenLibraryHandler()
+    public OpenLibraryHandler(HttpClient httpClient)
     {
-        _httpClient = new HttpClient();
-        _httpClient.BaseAddress = new Uri("https://openlibrary.org");
+        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        _httpClient.BaseAddress = new Uri("https://openlibrary.org/");
     }
     
     public async Task<Book?> GetBookByIsbn(string isbn)
@@ -39,7 +39,7 @@ public class OpenLibraryHandler : IIsbnHandler
                 if (!jsonDoc.RootElement.TryGetProperty("ISBN:" + isbn, out JsonElement jsonRoot))
                     return null;
 
-                return ParseJson(jsonRoot);
+                return ParseJson(jsonRoot, isbn);
             }
         }
         catch (Exception e)
@@ -48,7 +48,7 @@ public class OpenLibraryHandler : IIsbnHandler
         }
     }
 
-    private static Book ParseJson(JsonElement jsonRoot)
+    private static Book ParseJson(JsonElement jsonRoot, string isbn)
     {
         string title = jsonRoot.GetProperty("title").GetString() ?? "";
         
@@ -64,15 +64,15 @@ public class OpenLibraryHandler : IIsbnHandler
 
         // Fetch all cover urls.
         Dictionary<string, string> covers = new Dictionary<string, string>{ {"small", ""}, {"medium", ""}, {"large", ""} };
-        JsonElement coversJson = jsonRoot.GetProperty("covers");
+        JsonElement coversJson = jsonRoot.GetProperty("cover");
         foreach (string key in covers.Keys)
         {
             covers[key] = coversJson.GetProperty(key).GetString() ?? "";
         }
         
         // Fetch the first publisher.
-        string publisher = jsonRoot.GetProperty("publisher").GetProperty("0").GetProperty("name").GetString() ?? "";
+        string[] publishers = jsonRoot.GetProperty("publishers").EnumerateArray().Select(x => x.GetProperty("name").ToString() ?? "").ToArray();
         
-        return new Book(title, authors, "", publisher, publishDate, "", covers);
+        return new Book(title, authors, isbn, publishers, publishDate, "", covers);
     }
 }

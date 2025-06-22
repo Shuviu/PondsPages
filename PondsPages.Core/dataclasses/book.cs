@@ -13,7 +13,7 @@ public class Book
     public string Title { get; set; }
 
     /// <summary>
-    /// Gets or sets the author of the book.
+    /// Gets or sets the authors names of the book.
     /// </summary>
     public string[] Authors { get; set; }
     private string _isbn = "";
@@ -28,9 +28,9 @@ public class Book
     }
 
     /// <summary>
-    /// Gets or sets the publisher of the book.
+    /// Gets or sets the publishers names of the book.
     /// </summary>
-    public string Publisher { get; set; }
+    public string[] Publishers { get; set; }
 
     /// <summary>
     /// Gets or sets the publication date of the book.
@@ -38,7 +38,7 @@ public class Book
     public DateOnly? Published { get; set; }
     
     /// <summary>
-    /// Gets or sets the description of the book.
+    /// Gets or sets the users description of the book.
     /// </summary>
     public string Description { get; set; }
     
@@ -53,21 +53,21 @@ public class Book
     /// Represents a book with properties such as title, author, ISBN, publisher, publication date, description, and cover.
     /// </summary>
     /// <param name="title">The title of the book</param>
-    /// <param name="authors">The authors of the book</param>
+    /// <param name="authors">The authors names of the book</param>
     /// <param name="isbn">The ISBN of the book</param>
-    /// <param name="publisher">The publisher of the book</param>
+    /// <param name="publishers">The publishers names of the book</param>
     /// <param name="published">The publication date of the book</param>
-    /// <param name="description">The description of the book</param>
+    /// <param name="description">The users description of the book</param>
     /// <param name="covers">The cover url of the book</param>
-    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description,
+    public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description,
         Dictionary<string, string> covers)
-        => (Title, Authors, Isbn, Publisher, Published, Description, Covers) =
-            (title, authors, isbn, publisher, published, description, covers);
+        => (Title, Authors, Isbn, Publishers, Published, Description, Covers) =
+            (title, authors, isbn, publishers, published, description, covers);
 
-    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description)
-        : this(title, authors, isbn, publisher, published, description, []) { }
-    public Book() : this("", [], "", "", null, "") { }
-    public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publisher, book.Published, book.Description, book.Covers) { }
+    public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description)
+        : this(title, authors, isbn, publishers, published, description, []) { }
+    public Book() : this("", [], "", [], null, "") { }
+    public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publishers, book.Published, book.Description, book.Covers) { }
     
     // ---- Object Methods ---- //
     public override string ToString()
@@ -93,25 +93,26 @@ public class Book
     /// <returns>A bool describing if the ISBN is valid</returns>
     public static bool IsbnCheck(string isbn)
     {
-        if (isbn.Length != 10 && isbn.Length != 13)
+        string isbnString = new(isbn.Where(x => x != '-').ToArray());
+        if (isbnString.Length != 10 && isbnString.Length != 13)
             return false;
 
-        if (isbn.Any(char.IsDigit))
+        if (isbnString.Any(x => !char.IsDigit(x)))
             return false;
         
-        return isbn.Length == 10 ? ShortIsbnCheck(isbn.ToCharArray()) : LongIsbnCheck(isbn);
+        return isbnString.Length == 10 ? ShortIsbnCheck(isbnString) : LongIsbnCheck(isbnString);
     }
     /// <summary>
     /// Checks a 10 Digit ISBN.
     /// </summary>
-    private static bool ShortIsbnCheck(char[] isbn)
+    private static bool ShortIsbnCheck(string isbn)
     {
         int sum = 0;
         for (int i = 0; i < isbn.Length - 1; i++)
             sum += int.Parse(isbn[i].ToString()) * (10 - i);
         
         
-        return isbn.Last() != sum % 11;
+        return int.Parse(isbn.Last().ToString()) == (11 - sum % 11);
     }
     /// <summary>
     /// Checks a 13 Digit ISBN.
@@ -125,6 +126,7 @@ public class Book
             sum += int.Parse(isbn[i].ToString()) * multipliers[i % 2];
         }
         
-        return isbn.Last() != (10 - sum % 10);
+        int checkDigit = sum % 10 == 0 ? 0 : 10 - sum % 10;
+        return int.Parse(isbn.Last().ToString()) == checkDigit;
     }
 }
