@@ -30,7 +30,7 @@ public class Book
     /// <summary>
     /// Gets or sets the publisher of the book.
     /// </summary>
-    public string Publisher { get; set; }
+    public string[] Publishers { get; set; }
 
     /// <summary>
     /// Gets or sets the publication date of the book.
@@ -55,19 +55,19 @@ public class Book
     /// <param name="title">The title of the book</param>
     /// <param name="authors">The authors of the book</param>
     /// <param name="isbn">The ISBN of the book</param>
-    /// <param name="publisher">The publisher of the book</param>
+    /// <param name="publishers">The publisher of the book</param>
     /// <param name="published">The publication date of the book</param>
     /// <param name="description">The description of the book</param>
     /// <param name="covers">The cover url of the book</param>
-    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description,
+    public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description,
         Dictionary<string, string> covers)
-        => (Title, Authors, Isbn, Publisher, Published, Description, Covers) =
-            (title, authors, isbn, publisher, published, description, covers);
+        => (Title, Authors, Isbn, Publishers, Published, Description, Covers) =
+            (title, authors, isbn, publishers, published, description, covers);
 
-    public Book(string title, string[] authors, string isbn, string publisher, DateOnly? published, string description)
-        : this(title, authors, isbn, publisher, published, description, []) { }
-    public Book() : this("", [], "", "", null, "") { }
-    public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publisher, book.Published, book.Description, book.Covers) { }
+    public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description)
+        : this(title, authors, isbn, publishers, published, description, []) { }
+    public Book() : this("", [], "", [], null, "") { }
+    public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publishers, book.Published, book.Description, book.Covers) { }
     
     // ---- Object Methods ---- //
     public override string ToString()
