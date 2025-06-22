@@ -93,18 +93,19 @@ public class Book
     /// <returns>A bool describing if the ISBN is valid</returns>
     public static bool IsbnCheck(string isbn)
     {
-        if (isbn.Length != 10 && isbn.Length != 13)
+        string isbnString = new(isbn.Where(x => x != '-').ToArray());
+        if (isbnString.Length != 10 && isbn.Length != 13)
             return false;
 
-        if (isbn.Any(char.IsDigit))
+        if (isbnString.Any(x => !char.IsDigit(x)))
             return false;
         
-        return isbn.Length == 10 ? ShortIsbnCheck(isbn.ToCharArray()) : LongIsbnCheck(isbn);
+        return isbnString.Length == 10 ? ShortIsbnCheck(isbnString) : LongIsbnCheck(isbnString);
     }
     /// <summary>
     /// Checks a 10 Digit ISBN.
     /// </summary>
-    private static bool ShortIsbnCheck(char[] isbn)
+    private static bool ShortIsbnCheck(string isbn)
     {
         int sum = 0;
         for (int i = 0; i < isbn.Length - 1; i++)
