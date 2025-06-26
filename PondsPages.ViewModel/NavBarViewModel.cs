@@ -7,16 +7,20 @@ namespace PondsPages.ViewModel;
 public partial class NavBarViewModel : ViewModelBase
 {
     public event Action<ViewModelBase>? OnViewChangeRequested;
-    public ObservableCollection<NavEntry> NavEntries { get; set; }
-    [ObservableProperty]
-    private string _greeting = "Welcome to Avalonia!";
+    public ObservableCollection<NavEntry> LeftNavEntries { get; set; }
+    public ObservableCollection<NavEntry> RightNavEntries { get; set; }
 
     public NavBarViewModel()
     {
-        NavEntries = new ObservableCollection<NavEntry>()
+        LeftNavEntries = new ObservableCollection<NavEntry>()
         {
             new("Main", new RelayCommand(() => OnViewChangeRequested?.Invoke(new MainViewModel()))),
-            new("Library", new RelayCommand((() => {})))
+        };
+        RightNavEntries = new ObservableCollection<NavEntry>()
+        {   
+            new("Search", new RelayCommand((() => { }))),
+            new("Sort", new RelayCommand((() => { }))),
+            new("Add", new RelayCommand((() => { }))),
         };
     }
 }

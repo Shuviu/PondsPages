@@ -9,13 +9,12 @@
     
     <Design.DataContext><viewModel:NavBarViewModel></viewModel:NavBarViewModel></Design.DataContext>
     
-    <StackPanel
+    <Grid
         VerticalAlignment="Top"
         HorizontalAlignment="Stretch"
-        Background="Gray"
-        Orientation="Vertical">
+        Background="Gray">
         <ListBox
-            ItemsSource="{Binding NavEntries }">
+            ItemsSource="{Binding LeftNavEntries }">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -33,5 +32,25 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </StackPanel>
+        <ListBox
+            ItemsSource="{Binding RightNavEntries }"
+            HorizontalAlignment="Right">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="viewModel:NavEntry">
+                    <Button Content="{Binding Name}"
+                            Command="{Binding Command}"
+                            HorizontalAlignment="Stretch"
+                            Background="Transparent"
+                            Foreground="DarkGray">
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>
