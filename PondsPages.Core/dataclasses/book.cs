@@ -66,7 +66,7 @@ public class Book
 
     public Book(string title, string[] authors, string isbn, string[] publishers, DateOnly? published, string description)
         : this(title, authors, isbn, publishers, published, description, []) { }
-    public Book() : this("", [], "", [], null, "") { }
+    public Book() : this("default", [], "978-3-16-148410-0", [], null, "") { }
     public Book(Book book) : this(book.Title, book.Authors, book.Isbn, book.Publishers, book.Published, book.Description, book.Covers) { }
     
     // ---- Object Methods ---- //
