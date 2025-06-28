@@ -8,10 +8,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PondsPages.Desktop.Views.MainView"
              x:DataType="viewModel:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <viewModel:MainViewModel />
-  </Design.DataContext>
+  <Design.DataContext><viewModel:MainViewModel /></Design.DataContext>
+    <Grid>
+        <views:NavBar></views:NavBar>
+        <views:BookDetailView></views:BookDetailView>
+    </Grid>
     
 </controls:UserControl>
