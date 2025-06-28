@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:PondsPages.ViewModel;assembly=PondsPages.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PondsPages.Desktop.Views.RatingView"
+             x:DataType="viewmodel:RatingViewModel">
+    <Design.DataContext><viewmodel:RatingViewModel></viewmodel:RatingViewModel></Design.DataContext>
+    <StackPanel
+        Orientation="Horizontal">
+        <Button Content="O"></Button>
+        <Button Content="O"></Button>
+        <Button Content="O"></Button>
+        <Button Content="O"></Button>
+        <Button Content="O"></Button>
+    </StackPanel>
+</UserControl>
