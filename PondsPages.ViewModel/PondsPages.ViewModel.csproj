@@ -5,6 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Avalonia.ReactiveUI.Events" />
       <PackageReference Include="CommunityToolkit.Mvvm" />
     </ItemGroup>
 

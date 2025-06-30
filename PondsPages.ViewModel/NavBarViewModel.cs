@@ -6,7 +6,7 @@ namespace PondsPages.ViewModel;
 
 public partial class NavBarViewModel : ViewModelBase
 {
-    public event Action<ViewModelBase>? OnViewChangeRequested;
+    public event EventHandler<ViewModelBase>? OnViewChangeRequested;
     public ObservableCollection<NavEntry> LeftNavEntries { get; set; }
     public ObservableCollection<NavEntry> RightNavEntries { get; set; }
 
@@ -14,7 +14,7 @@ public partial class NavBarViewModel : ViewModelBase
     {
         LeftNavEntries = new ObservableCollection<NavEntry>()
         {
-            new("Main", new RelayCommand(() => OnViewChangeRequested?.Invoke(new MainViewModel()))),
+            new("Main", new RelayCommand(() => OnViewChangeRequested?.Invoke(this, new MainViewModel())))
         };
         RightNavEntries = new ObservableCollection<NavEntry>()
         {   

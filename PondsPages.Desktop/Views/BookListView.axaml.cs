@@ -10,6 +10,5 @@ public partial class BookListView : UserControl
     public BookListView()
     {
         InitializeComponent();
-        this.DataContext = new BookListViewModel();
     }
 }
