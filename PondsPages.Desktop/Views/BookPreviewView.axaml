@@ -8,7 +8,8 @@
              x:DataType="viewmodel:BookPreviewViewModel">
     <Design.DataContext><viewmodel:BookPreviewViewModel></viewmodel:BookPreviewViewModel></Design.DataContext>
     <Grid
-        RowDefinitions="2*, 0.1*, *">
+        RowDefinitions="2*, 0.1*, *"
+        VerticalAlignment="Top">
         <Image Grid.Row="0" 
                HorizontalAlignment="Center"
                Source="avares://PondsPages.Desktop/Assets/0008537565-L.jpg"></Image>

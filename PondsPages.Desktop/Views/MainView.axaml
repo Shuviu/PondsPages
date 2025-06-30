@@ -9,9 +9,9 @@
              x:Class="PondsPages.Desktop.Views.MainView"
              x:DataType="viewModel:MainViewModel">
   <Design.DataContext><viewModel:MainViewModel /></Design.DataContext>
-    <Grid>
+    <StackPanel>
         <views:NavBar></views:NavBar>
-        <views:BookDetailView></views:BookDetailView>
-    </Grid>
+        <views:BookListView></views:BookListView>
+    </StackPanel>
     
 </controls:UserControl>
