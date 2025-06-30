@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:PondsPages.ViewModel;assembly=PondsPages.ViewModel"
+             xmlns:views="clr-namespace:PondsPages.Desktop.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PondsPages.Desktop.Views.BookListView"
+             x:DataType="viewmodel:BookListViewModel">
+    <Design.DataContext><viewmodel:BookListViewModel></viewmodel:BookListViewModel></Design.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="BookPreviewTemplate" DataType="{x:Type viewmodel:BookPreviewViewModel}">
+                <views:BookPreviewView></views:BookPreviewView>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <ListBox ItemsSource="{Binding BookPreviews}" ItemTemplate="{StaticResource BookPreviewTemplate}">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="8" VerticalAlignment="Top"></UniformGrid>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
+</UserControl>

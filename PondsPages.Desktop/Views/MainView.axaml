@@ -3,15 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:PondsPages.ViewModel;assembly=PondsPages.ViewModel"
+             xmlns:views="clr-namespace:PondsPages.Desktop.Views"
              xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="PondsPages.Desktop.Views.MainView"
              x:DataType="viewModel:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <viewModel:MainViewModel />
-  </Design.DataContext>
-
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <Design.DataContext><viewModel:MainViewModel /></Design.DataContext>
+    <StackPanel>
+        <views:NavBar></views:NavBar>
+        <views:BookListView></views:BookListView>
+    </StackPanel>
+    
 </controls:UserControl>

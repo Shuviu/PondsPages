@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:PondsPages.ViewModel;assembly=PondsPages.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PondsPages.Desktop.Views.BookPreviewView"
+             x:DataType="viewmodel:BookPreviewViewModel">
+    <Design.DataContext><viewmodel:BookPreviewViewModel></viewmodel:BookPreviewViewModel></Design.DataContext>
+    <Grid
+        RowDefinitions="2*, 0.1*, *"
+        VerticalAlignment="Top">
+        <Image Grid.Row="0" 
+               HorizontalAlignment="Center"
+               Source="avares://PondsPages.Desktop/Assets/0008537565-L.jpg"></Image>
+        <TextBlock Grid.Row="2" 
+                   HorizontalAlignment="Center"
+                   Text="{Binding Book.Title}"></TextBlock>
+    </Grid>
+</UserControl>
