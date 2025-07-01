@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PondsPages.dataclasses;
+using PondsPages.services;
 
 namespace PondsPages.ViewModel;
 
@@ -15,11 +16,32 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty] private ViewModelBase _navBarView;
 
+    /// <summary>
+    /// Provides access to configuration management services, including loading
+    /// and saving application configuration data. Dependency injected into
+    /// the view model to enable configuration-related operations.
+    /// </summary>
+    private readonly ConfigService? _configService;
+    
     // ---- Constructors ---- //
-
+    
     /// <summary>
     /// Represents the main view model for the application. This serves as the central point
     /// for coordinating navigation and managing the current view in the application.
+    /// </summary>
+    public MainViewModel(ConfigService configService)
+    {
+        _configService = configService;
+        CurrView = new BookListViewModel();
+        NavBarViewModel navbar = new NavBarViewModel();
+        navbar.OnViewChangeRequested += HandleViewChangeRequest;
+        NavBarView = navbar;
+    }
+    
+    /// <summary>
+    /// Represents the main view model for the application. This serves as the central point
+    /// for coordinating navigation and managing the current view in the application.
+    /// Default constructor. Used for testing purposes.
     /// </summary>
     public MainViewModel()
     {
