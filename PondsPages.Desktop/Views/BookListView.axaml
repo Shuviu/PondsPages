@@ -16,7 +16,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
     
-    <ListBox ItemsSource="{Binding BookPreviews}" ItemTemplate="{StaticResource BookPreviewTemplate}">
+    <ListBox ItemsSource="{Binding BookPreviews}" 
+             ItemTemplate="{StaticResource BookPreviewTemplate}"
+             SelectedItem="{Binding SelectedBook}">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                 <UniformGrid Columns="8" VerticalAlignment="Top"></UniformGrid>

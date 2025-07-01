@@ -9,6 +9,5 @@ public partial class BookDetailView : UserControl
     public BookDetailView()
     {
         InitializeComponent();
-        this.DataContext = new BookDetailViewModel();
     }
 }

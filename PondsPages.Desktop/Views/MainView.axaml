@@ -10,8 +10,8 @@
              x:DataType="viewModel:MainViewModel">
   <Design.DataContext><viewModel:MainViewModel /></Design.DataContext>
     <StackPanel>
-        <views:NavBar></views:NavBar>
-        <views:BookListView></views:BookListView>
+        <ContentControl Content="{Binding NavBarView}"></ContentControl>
+        <ContentControl Content="{Binding CurrView}"></ContentControl>
     </StackPanel>
     
 </controls:UserControl>
