@@ -10,6 +10,5 @@ public partial class NavBar : UserControl
     public NavBar()
     {
         InitializeComponent();
-        this.DataContext = new NavBarViewModel();
     }
 }

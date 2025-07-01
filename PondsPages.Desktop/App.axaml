@@ -1,9 +1,22 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewmodel="clr-namespace:PondsPages.ViewModel;assembly=PondsPages.ViewModel"
+             xmlns:views="clr-namespace:PondsPages.Desktop.Views"
              x:Class="PondsPages.Desktop.App"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-  
+  <Application.DataTemplates>
+      <DataTemplate DataType="{x:Type viewmodel:BookListViewModel}">
+          <views:BookListView></views:BookListView>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewmodel:BookDetailViewModel}">
+          <views:BookDetailView></views:BookDetailView>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewmodel:NavBarViewModel}">
+          <views:NavBar></views:NavBar>
+      </DataTemplate>
+  </Application.DataTemplates>
+      
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
