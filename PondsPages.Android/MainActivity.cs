@@ -25,12 +25,11 @@ public class MainActivity : AvaloniaMainActivity<App>
             .WithInterFont()
             .AfterSetup(build =>
             {
-                ServiceProvider serviceProvider = SetupServices();
                 
                 // Create the main window with the right service contexts
                 var mainView = new MainView()
                 {
-                    DataContext = serviceProvider.GetRequiredService<MainViewModel>()
+                    DataContext = new MainViewModel(FetchConfigDirectory())
                 };
                 
                 if (Avalonia.Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime singleViewApplication)
@@ -47,20 +46,13 @@ public class MainActivity : AvaloniaMainActivity<App>
     /// A <see cref="ServiceProvider"/> instance that contains the registered services
     /// and dependencies required for the application.
     /// </returns>
-    static ServiceProvider SetupServices()
+    static string FetchConfigDirectory()
     {
-        ServiceCollection serviceCollection = new();
         
         // Fetches the configuration directory for the application.
         string configDirectory = Path.Combine(global::Android.App.Application.Context.FilesDir?.AbsolutePath ?? "" , "PondsPages");
         Directory.CreateDirectory(configDirectory);
 
-        // Add the required services to the service collection.
-        serviceCollection.AddSingleton<ConfigService>(app => new ConfigService(configDirectory));
-
-        // Add the required viewmodels to the service collection.
-        serviceCollection.AddSingleton<MainViewModel>();
-                
-        return serviceCollection.BuildServiceProvider();
+        return configDirectory;
     }
 }

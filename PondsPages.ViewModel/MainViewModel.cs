@@ -17,11 +17,9 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private ViewModelBase _navBarView;
 
     /// <summary>
-    /// Provides access to configuration management services, including loading
-    /// and saving application configuration data. Dependency injected into
-    /// the view model to enable configuration-related operations.
+    /// Represents the currently implemented ConfigService
     /// </summary>
-    private readonly ConfigService? _configService;
+    private readonly IConfigService _configService;
     
     // ---- Constructors ---- //
     
@@ -29,9 +27,9 @@ public partial class MainViewModel : ViewModelBase
     /// Represents the main view model for the application. This serves as the central point
     /// for coordinating navigation and managing the current view in the application.
     /// </summary>
-    public MainViewModel(ConfigService configService)
+    public MainViewModel(string configBaseDir)
     {
-        _configService = configService;
+        _configService = new ConfigService(configBaseDir);
         CurrView = new BookListViewModel();
         NavBarViewModel navbar = new NavBarViewModel();
         navbar.OnViewChangeRequested += HandleViewChangeRequest;
@@ -43,13 +41,7 @@ public partial class MainViewModel : ViewModelBase
     /// for coordinating navigation and managing the current view in the application.
     /// Default constructor. Used for testing purposes.
     /// </summary>
-    public MainViewModel()
-    {
-        CurrView = new BookListViewModel();
-        NavBarViewModel navbar = new NavBarViewModel();
-        navbar.OnViewChangeRequested += HandleViewChangeRequest;
-        NavBarView = navbar;
-    }
+    public MainViewModel() : this(""){}
     
     // ---- Event Handlers ---- //
 

@@ -28,12 +28,11 @@ sealed class Program
             .LogToTrace()
             .AfterSetup(build =>
             {
-                ServiceProvider serviceProvider = SetupServices();
                 
                 // Create the main window with the right service contexts
                 var mainWindow = new MainWindow()
                 {
-                    DataContext = serviceProvider.GetRequiredService<MainViewModel>()
+                    DataContext = new MainViewModel(FetchConfigDirectory())
                 };
                 
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -49,7 +48,7 @@ sealed class Program
     /// A <see cref="ServiceProvider"/> instance that contains the registered services
     /// and dependencies required for the application.
     /// </returns>
-    static ServiceProvider SetupServices()
+    static string FetchConfigDirectory()
     {
         ServiceCollection serviceCollection = new();
         
@@ -57,13 +56,7 @@ sealed class Program
         string configDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PondsPages");
         Directory.CreateDirectory(configDirectory);
 
-        // Add the required services to the service collection.
-        serviceCollection.AddSingleton<ConfigService>(provider => new ConfigService(configDirectory));
-
-        // Add the required viewmodels to the service collection.
-        serviceCollection.AddSingleton<MainViewModel>();
-                
-        return serviceCollection.BuildServiceProvider();
+        return configDirectory;
     }
 
 }
