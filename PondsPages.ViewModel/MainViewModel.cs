@@ -29,7 +29,7 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     public MainViewModel(string configBaseDir)
     {
-        _configService = new ConfigService(configBaseDir);
+        _configService = new ConfigService(configBaseDir, new LocalFileService());
         CurrView = new BookListViewModel();
         NavBarViewModel navbar = new NavBarViewModel();
         navbar.OnViewChangeRequested += HandleViewChangeRequest;
@@ -74,7 +74,7 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     /// <param name="oldValue">The previously active view model.</param>
     /// <param name="newValue">The newly active view model.</param>
-    partial void OnCurrViewChanged(ViewModelBase? oldValue, ViewModelBase? newValue)
+    partial void OnCurrViewChanged(ViewModelBase? oldValue, ViewModelBase newValue)
     {
         if (oldValue is BookListViewModel oldBookListViewModel)
         {
