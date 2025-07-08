@@ -16,4 +16,8 @@
       <Folder Include="dataclasses\" />
       <Folder Include="util\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Data.Sqlite" />
+    </ItemGroup>
 </Project>

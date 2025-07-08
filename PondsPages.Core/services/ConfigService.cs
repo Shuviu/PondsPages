@@ -115,7 +115,7 @@ public class ConfigService : IConfigService
     {
         if (!localDb.TryGetProperty("PathToDb", out JsonElement connectionString))
             throw new Exception("Path to database not found in local database configuration.");
-        return connectionString.GetString() ?? "";
+        return $"Data Source={connectionString.GetString()}" ?? "";
     }
 
     private string CreateRemoteConnString(JsonElement remoteDb)
