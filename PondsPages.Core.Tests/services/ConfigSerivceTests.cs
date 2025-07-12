@@ -5,6 +5,7 @@ using System.IO;
 using PondsPages.dataclasses; // Assuming your Config class is here
 using PondsPages.services;
 using JsonException = System.Text.Json.JsonException;
+namespace PondsPages.Core.Tests.services;
 
 public class ConfigServiceTests
 {
@@ -36,7 +37,7 @@ public class ConfigServiceTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("local", result.Database);
-        Assert.Equal("testPath", result.ConnectionString);
+        Assert.Equal("Data Source=testPath", result.ConnectionString);
     }
 
     [Fact]

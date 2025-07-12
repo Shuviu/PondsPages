@@ -140,6 +140,11 @@ public class SqliteDatabaseService : IDatabaseService
         return publishers.ToArray();
     }
 
+    /// <summary>
+    /// Saves a collection of books to the database.
+    /// </summary>
+    /// <param name="books">A list of <see cref="Book"/> objects to be saved into the database.</param>
+    /// <exception cref="Exception">Thrown when a book cannot be inserted into the database.</exception>   
     public void SaveBooks(List<Book> books)
     {
         foreach (Book book in books)
@@ -207,7 +212,7 @@ public class SqliteDatabaseService : IDatabaseService
         if (authorInsert.ExecuteNonQuery() > 0)
         {
             // fetch author ID from last insert
-            int authorId = (int)(authorInsert.ExecuteScalar() ?? throw new Exception("Author ID not found"));
+            int authorId = (int)(long)(authorInsert.ExecuteScalar() ?? throw new Exception("Author ID not found"));
             // link author to book using author ID
             authorBookLinkInsert.Parameters.AddWithValue("@author_id", authorId);
             authorBookLinkInsert.ExecuteNonQuery();
@@ -243,7 +248,7 @@ public class SqliteDatabaseService : IDatabaseService
         if (publisherInsert.ExecuteNonQuery() > 0)
         {
             // fetch publisher ID from last insert
-            int publisherId = (int)(publisherInsert.ExecuteScalar() ?? throw new Exception("Publisher ID not found"));
+            int publisherId = (int)(long)(publisherInsert.ExecuteScalar() ?? throw new Exception("Publisher ID not found"));
             // link publisher to book using publisher ID
             publisherBookLinkInsert.Parameters.AddWithValue("@publisher_id", publisherId);
             publisherBookLinkInsert.ExecuteNonQuery();
