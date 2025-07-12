@@ -42,7 +42,7 @@ public class OpenLibraryHandler : IIsbnHandler
                 return ParseJson(jsonRoot, isbn);
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return null;
         }

@@ -39,29 +39,63 @@ public class ConfigServiceTests
         Assert.Equal("local", result.Database);
         Assert.Equal("Data Source=testPath", result.ConnectionString);
     }
-
+    
     [Fact]
-    public void LoadConfig_ConfigFileNotFound_ThrowsException()
+    public void LoadConfig_ConfigFileNotFound_LoadsDefaultConfig()
     {
         // Arrange
         var mockFileService = new Mock<IFileService>();
-        var dbJsonContent = @"{""local"": {""PathToDb"": ""testPath;""}, ""remote"": {}}";
 
-        // Simulate config.json not existing
+        // Simulate config.json and db.json not existing
         mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "config.json"))).Returns(false);
-        mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "db.json"))).Returns(true);
-        mockFileService.Setup(f => f.ReadAllText(Path.Combine(_baseDir, "db.json"))).Returns(dbJsonContent);
+        mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "db.json"))).Returns(false);
 
+        // Expect calls to WriteAllText for default config files
+        mockFileService.Setup(f => f.WriteAllText(Path.Combine(_baseDir, "config.json"), It.IsAny<string>()))
+                       .Callback<string, string>((path, content) =>
+                       {
+                           // Simulate the file being created
+                           mockFileService.Setup(f => f.Exists(path)).Returns(true);
+                           mockFileService.Setup(f => f.ReadAllText(path)).Returns(content);
+                       });
+
+        mockFileService.Setup(f => f.WriteAllText(Path.Combine(_baseDir, "db.json"), It.IsAny<string>()))
+                       .Callback<string, string>((path, content) =>
+                       {
+                           // Simulate the file being created
+                           mockFileService.Setup(f => f.Exists(path)).Returns(true);
+                           mockFileService.Setup(f => f.ReadAllText(path)).Returns(content);
+                       });
+        
+        // Setup ReadAllText for when LoadConfig attempts to read the *newly created* default files.
+        // This is crucial because the service *writes* then *reads* the default config.
+        mockFileService.Setup(f => f.ReadAllText(Path.Combine(_baseDir, "config.json")))
+            .Returns("{\n\"Database\": \"local\"\n}"); // Default config content
+
+        mockFileService.Setup(f => f.ReadAllText(Path.Combine(_baseDir, "db.json")))
+            .Returns($"{{ \"local\": {{ \"PathToDb\": \"{Path.Combine(_baseDir, "pondspages.db")}\" }}, \"remote\": {{}} }}"); // Default db.json content
 
         var service = new ConfigService(_baseDir, mockFileService.Object);
 
-        // Act & Assert
-        var exception = Assert.Throws<Exception>(() => service.LoadConfig());
-        Assert.Equal("Config file does not exist.", exception.Message);
+        // Act
+        Config config = service.LoadConfig();
+
+        // Assert
+        Assert.NotNull(config);
+        Assert.Equal("local", config.Database);
+        Assert.Equal($"Data Source={Path.Combine(_baseDir, "pondspages.db")}", config.ConnectionString);
+
+        // Verify that CreateDefaultConfig and CreateDefaultDbConfig were called
+        mockFileService.Verify(f => f.WriteAllText(Path.Combine(_baseDir, "config.json"), It.IsAny<string>()), Times.Once);
+        mockFileService.Verify(f => f.WriteAllText(Path.Combine(_baseDir, "db.json"), It.IsAny<string>()), Times.Once);
+
+        // Verify that Exists was called for both files
+        mockFileService.Verify(f => f.Exists(Path.Combine(_baseDir, "config.json")), Times.AtLeastOnce);
+        mockFileService.Verify(f => f.Exists(Path.Combine(_baseDir, "db.json")), Times.AtLeastOnce);
     }
 
-    [Fact]
-    public void LoadConfig_DbFileNotFound_ThrowsException()
+      [Fact]
+    public void LoadConfig_DbFileNotFound_LoadsDefaultDbConfig()
     {
         // Arrange
         var mockFileService = new Mock<IFileService>();
@@ -69,14 +103,38 @@ public class ConfigServiceTests
 
         // Simulate config.json existing, but db.json not existing
         mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "config.json"))).Returns(true);
-        mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "db.json"))).Returns(false);
         mockFileService.Setup(f => f.ReadAllText(Path.Combine(_baseDir, "config.json"))).Returns(configJsonContent);
+        mockFileService.Setup(f => f.Exists(Path.Combine(_baseDir, "db.json"))).Returns(false);
+
+        // Expect a call to WriteAllText for the default db.json
+        mockFileService.Setup(f => f.WriteAllText(Path.Combine(_baseDir, "db.json"), It.IsAny<string>()))
+                       .Callback<string, string>((path, content) =>
+                       {
+                           // Simulate the db.json file being created
+                           mockFileService.Setup(f => f.Exists(path)).Returns(true);
+                           mockFileService.Setup(f => f.ReadAllText(path)).Returns(content);
+                       });
+
+        // Setup ReadAllText for when LoadConfig attempts to read the *newly created* default db.json.
+        // This is crucial because the service *writes* then *reads* the default config.
+        mockFileService.Setup(f => f.ReadAllText(Path.Combine(_baseDir, "db.json")))
+            .Returns($"{{ \"local\": {{ \"PathToDb\": \"{Path.Combine(_baseDir, "pondspages.db")}\" }}, \"remote\": {{}} }}"); // Default db.json content
 
         var service = new ConfigService(_baseDir, mockFileService.Object);
 
-        // Act & Assert
-        var exception = Assert.Throws<Exception>(() => service.LoadConfig());
-        Assert.Equal("Database config file does not exist.", exception.Message);
+        // Act
+        Config config = service.LoadConfig();
+
+        // Assert
+        Assert.NotNull(config);
+        Assert.Equal("local", config.Database);
+        Assert.Equal($"Data Source={Path.Combine(_baseDir, "pondspages.db")}", config.ConnectionString);
+
+        // Verify that CreateDefaultDbConfig was called
+        mockFileService.Verify(f => f.WriteAllText(Path.Combine(_baseDir, "db.json"), It.IsAny<string>()), Times.Once);
+
+        // Verify that Exists was called for db.json
+        mockFileService.Verify(f => f.Exists(Path.Combine(_baseDir, "db.json")), Times.AtLeastOnce);
     }
 
     [Fact]

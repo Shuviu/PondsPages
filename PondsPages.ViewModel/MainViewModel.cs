@@ -19,7 +19,8 @@ public partial class MainViewModel : ViewModelBase
     /// <summary>
     /// Represents the currently implemented ConfigService
     /// </summary>
-    private readonly IConfigService _configService;
+    private readonly Config _currConfig;
+    private readonly IDatabaseService _databaseService;
     
     // ---- Constructors ---- //
     
@@ -29,11 +30,24 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     public MainViewModel(string configBaseDir)
     {
-        _configService = new ConfigService(configBaseDir, new LocalFileService());
         CurrView = new BookListViewModel();
         NavBarViewModel navbar = new NavBarViewModel();
         navbar.OnViewChangeRequested += HandleViewChangeRequest;
         NavBarView = navbar;
+        
+        // Load the config service and its config data.
+        IConfigService configService = new ConfigService(configBaseDir, new LocalFileService());
+        _currConfig = configService.LoadConfig();
+        
+        // Load the database service based on the selected database type.
+        switch (_currConfig.Database)
+        {
+            case "remote":
+                throw new NotImplementedException();
+            default:
+                _databaseService = new SqliteDatabaseService(_currConfig.ConnectionString);
+                break;
+        }
     }
     
     /// <summary>
