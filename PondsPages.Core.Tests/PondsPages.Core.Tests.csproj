@@ -27,4 +27,10 @@
       <ProjectReference Include="..\PondsPages.Core\PondsPages.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="TestAssets\InitialDBTestState.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
