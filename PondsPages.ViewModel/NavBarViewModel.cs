@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PondsPages.services.database;
 
 namespace PondsPages.ViewModel;
 
@@ -28,11 +29,11 @@ public partial class NavBarViewModel : ViewModelBase
     /// Represents a view model for a navigation bar, containing collections for left and right navigation entries.
     /// Manages view-related commands and notifies subscribers when a view change request is triggered.
     /// </summary>
-    public NavBarViewModel()
+    public NavBarViewModel(IDatabaseService databaseService)
     {
         LeftNavEntries = new ObservableCollection<NavEntry>()
         {
-            new("Main", new RelayCommand(() => OnViewChangeRequested?.Invoke(this, new BookListViewModel())))
+            new("Main", new RelayCommand(() => OnViewChangeRequested?.Invoke(this, new BookListViewModel(databaseService.GetAllBooks()))))
         };
         RightNavEntries = new ObservableCollection<NavEntry>()
         {   

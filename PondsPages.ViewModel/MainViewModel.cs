@@ -31,11 +31,6 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     public MainViewModel(string configBaseDir)
     {
-        CurrView = new BookListViewModel();
-        NavBarViewModel navbar = new NavBarViewModel();
-        navbar.OnViewChangeRequested += HandleViewChangeRequest;
-        NavBarView = navbar;
-        
         // Load the config service and its config data.
         IConfigService configService = new ConfigService(configBaseDir, new LocalFileService());
         _currConfig = configService.LoadConfig();
@@ -51,6 +46,10 @@ public partial class MainViewModel : ViewModelBase
         }
         
         _databaseService.InitializeDatabase();
+        NavBarViewModel navbar = new NavBarViewModel(_databaseService);
+        navbar.OnViewChangeRequested += HandleViewChangeRequest;
+        NavBarView = navbar;
+        CurrView = new BookListViewModel(_databaseService.GetAllBooks());
     }
     
     /// <summary>
@@ -97,8 +96,7 @@ public partial class MainViewModel : ViewModelBase
         {
             oldBookListViewModel.OnBookSelected -= HandleBookSelection;
         }
-
-        else if (newValue is BookListViewModel newBookListViewModel)
+        if (newValue is BookListViewModel newBookListViewModel)
         {
             newBookListViewModel.OnBookSelected += HandleBookSelection;
         }
