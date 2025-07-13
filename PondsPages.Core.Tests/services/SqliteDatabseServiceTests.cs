@@ -1,6 +1,8 @@
 using Microsoft.Data.Sqlite;
 using PondsPages.dataclasses;
 using PondsPages.services;
+using PondsPages.services.database;
+
 namespace PondsPages.Core.Tests.services;
 
 public class SqliteDatabseServiceTests : IDisposable

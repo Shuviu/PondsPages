@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using PondsPages.dataclasses;
+using System.IO;
 using Microsoft.Data.Sqlite;
+using PondsPages.dataclasses;
 
-namespace PondsPages.services;
+namespace PondsPages.services.database;
 
 public class SqliteDatabaseService : IDatabaseService
 {
@@ -23,6 +24,18 @@ public class SqliteDatabaseService : IDatabaseService
     }
 
     // ---- Methods ---- //
+
+    public void InitializeDatabase()
+    {
+        using SqliteConnection conn = new(_connectionString);
+        
+        SqliteCommand createTables = conn.CreateCommand();
+        createTables.CommandText = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "services", "database" , "DatabaseInit.sql"));;
+        
+        conn.Open();
+        createTables.ExecuteNonQuery();
+        conn.Close();
+    }
 
     /// <summary>
     /// Retrieves all books stored in the database.

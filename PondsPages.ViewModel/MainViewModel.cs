@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PondsPages.dataclasses;
 using PondsPages.services;
+using PondsPages.services.database;
 
 namespace PondsPages.ViewModel;
 
@@ -48,6 +49,8 @@ public partial class MainViewModel : ViewModelBase
                 _databaseService = new SqliteDatabaseService(_currConfig.ConnectionString);
                 break;
         }
+        
+        _databaseService.InitializeDatabase();
     }
     
     /// <summary>

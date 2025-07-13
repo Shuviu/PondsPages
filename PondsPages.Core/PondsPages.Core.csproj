@@ -20,4 +20,10 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.Data.Sqlite" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="services\database\DatabaseInit.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>
