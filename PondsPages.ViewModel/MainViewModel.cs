@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PondsPages.dataclasses;
 using PondsPages.services;
+using PondsPages.services.database;
 
 namespace PondsPages.ViewModel;
 
@@ -19,7 +20,8 @@ public partial class MainViewModel : ViewModelBase
     /// <summary>
     /// Represents the currently implemented ConfigService
     /// </summary>
-    private readonly IConfigService _configService;
+    private readonly Config _currConfig;
+    private readonly IDatabaseService _databaseService;
     
     // ---- Constructors ---- //
     
@@ -29,11 +31,25 @@ public partial class MainViewModel : ViewModelBase
     /// </summary>
     public MainViewModel(string configBaseDir)
     {
-        _configService = new ConfigService(configBaseDir, new LocalFileService());
-        CurrView = new BookListViewModel();
-        NavBarViewModel navbar = new NavBarViewModel();
+        // Load the config service and its config data.
+        IConfigService configService = new ConfigService(configBaseDir, new LocalFileService());
+        _currConfig = configService.LoadConfig();
+        
+        // Load the database service based on the selected database type.
+        switch (_currConfig.Database)
+        {
+            case "remote":
+                throw new NotImplementedException();
+            default:
+                _databaseService = new SqliteDatabaseService(_currConfig.ConnectionString);
+                break;
+        }
+        
+        _databaseService.InitializeDatabase();
+        NavBarViewModel navbar = new NavBarViewModel(_databaseService);
         navbar.OnViewChangeRequested += HandleViewChangeRequest;
         NavBarView = navbar;
+        CurrView = new BookListViewModel(_databaseService.GetAllBooks());
     }
     
     /// <summary>
@@ -80,8 +96,7 @@ public partial class MainViewModel : ViewModelBase
         {
             oldBookListViewModel.OnBookSelected -= HandleBookSelection;
         }
-
-        else if (newValue is BookListViewModel newBookListViewModel)
+        if (newValue is BookListViewModel newBookListViewModel)
         {
             newBookListViewModel.OnBookSelected += HandleBookSelection;
         }

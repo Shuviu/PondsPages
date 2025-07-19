@@ -21,6 +21,8 @@ public class ConfigService : IConfigService
     /// This path is constructed based on the provided base directory.
     /// </summary>
     private readonly string _dbConfigPath;
+
+    private readonly string _baseDir;
     
     /// <summary>
     /// The file service used to access the file system.
@@ -35,6 +37,7 @@ public class ConfigService : IConfigService
     /// <param name="fileService">The file service used to access the file system.</param>
     public ConfigService(string baseDir, IFileService fileService)
     {
+        _baseDir = baseDir;
         _configPath = Path.Combine(baseDir, "config.json");
         _dbConfigPath = Path.Combine(baseDir, "db.json");
         _fileService = fileService;
@@ -50,11 +53,11 @@ public class ConfigService : IConfigService
     {
         if (!_fileService.Exists(_configPath))
         {
-            throw new Exception("Config file does not exist.");
+            CreateDefaultConfig();
         }
         if (!_fileService.Exists(_dbConfigPath))
         {
-            throw new Exception("Database config file does not exist.");
+            CreateDefaultDbConfig();
         }
         
         Config config = ParseJsonToConfig(_fileService.ReadAllText(_configPath));
@@ -121,5 +124,24 @@ public class ConfigService : IConfigService
     private string CreateRemoteConnString(JsonElement remoteDb)
     {
         throw new NotImplementedException();
+    }
+
+    private void CreateDefaultConfig()
+    {
+        string defaultConfig = "{\n" +
+                              "  \"Database\": \"local\"\n" +
+                              " }";
+        _fileService.WriteAllText(_configPath, defaultConfig);
+    }
+
+    private void CreateDefaultDbConfig()
+    {
+        string defaultDbConfig = "{\n" +
+                                 "  \"local\": {\n" +
+                                 $"    \"PathToDb\": \"{Path.Combine(_baseDir, "pondspages.db")}\"\n" +
+                                 "  },\n" +
+                                 "  \"remote\": {}\n" +
+                                 "}";
+        _fileService.WriteAllText(_dbConfigPath, defaultDbConfig);
     }
 }

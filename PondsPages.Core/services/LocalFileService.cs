@@ -31,4 +31,14 @@ public class LocalFileService : IFileService
             throw new ArgumentException("Invalid Path provided");
         return File.ReadAllText(path);
     }
+
+    /// <summary>
+    /// Writes the specified content to a file at the given path in the local file system, overwriting the file if it already exists.
+    /// </summary>
+    /// <param name="path">The path of the file where the content will be written.</param>
+    /// <param name="content">The content to write to the file.</param>
+    public void WriteAllText(string path, string content)
+    {
+        File.WriteAllText(path, content);
+    }
 }
